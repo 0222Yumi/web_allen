@@ -2,6 +2,25 @@
 <html>
 <head>
     <title>我的第一個網站</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 發出網絡請求獲取比特幣價格
+        axios.get('https://api.coindesk.com/v1/bpi/currentprice/BTC.json')
+            .then(function (response) {
+                // 請求成功，處理響應數據
+                var price = response.data.bpi.USD.rate;
+                console.log('比特幣價格：$' + price);
+                
+                // 在網頁中顯示價格
+                var priceElement = document.createElement('p');
+                priceElement.textContent = '比特幣價格：$' + price;
+                document.body.appendChild(priceElement);
+            })
+            .catch(function (error) {
+                // 請求失敗，處理錯誤
+                console.log('獲取比特幣價格失敗：', error);
+            });
+    </script>
 </head>
 <body>
     <h1>歡迎來到我的網站！</h1>
