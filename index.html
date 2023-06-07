@@ -1,7 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>我的第一個網站</title>
+    <title>我的虛擬貨幣網站</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333333;
+        }
+        
+        p {
+            color: #666666;
+        }
+        
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 40px;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // 發出網絡請求獲取比特幣價格
@@ -13,6 +36,7 @@
                 
                 // 在網頁中顯示價格
                 var priceElement = document.createElement('p');
+                priceElement.className = 'price';
                 priceElement.textContent = '比特幣價格：$' + price;
                 document.body.appendChild(priceElement);
             })
@@ -23,7 +47,7 @@
     </script>
 </head>
 <body>
-    <h1>歡迎來到我的網站！</h1>
+    <h1>歡迎來到我的虛擬貨幣網站！</h1>
     <p>這是一個簡單的示範網站。</p>
 </body>
 </html>
