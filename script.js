@@ -4,8 +4,8 @@ var startDate = moment().startOf('year').format('YYYY-MM-DD');
 
 // 發出網絡請求獲取比特幣歷史價格數據
 axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + startDate + '&end=' + endDate)
-        .then(function (response) {
-        // 請求成功，處理響應數據
+    .then(function (response) {
+        console.log(response); // 將整個 response 對象打印到控制台
         var data = response.data.bpi;
         if (!data) {
             console.log('No data received');
@@ -53,6 +53,5 @@ axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + start
             .call(yAxis);
     })
     .catch(function (error) {
-        // 請求失敗，處理錯誤
         console.log('獲取比特幣價格失敗：', error);
     });
