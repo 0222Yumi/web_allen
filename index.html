@@ -10,35 +10,70 @@
             padding: 20px;
             text-align: center;
         }
-        
+
         h1 {
             color: #333333;
         }
-        
+
         p {
             color: #666666;
         }
-        
+
         .price {
             font-size: 24px;
             font-weight: bold;
             margin-top: 40px;
         }
+
+        #chart {
+            width: 75%;
+            height: 500px;
+            margin: 0 auto;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // 發出網絡請求獲取比特幣價格
-        axios.get('https://api.coindesk.com/v1/bpi/currentprice/BTC.json')
+        axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=2023-01-01&end=2023-06-07')
             .then(function (response) {
                 // 請求成功，處理響應數據
-                var price = response.data.bpi.USD.rate;
-                console.log('比特幣價格：$' + price);
+                var priceData = response.data.bpi;
+                var dates = Object.keys(priceData);
+                var prices = Object.values(priceData);
                 
-                // 在網頁中顯示價格
-                var priceElement = document.createElement('p');
-                priceElement.className = 'price';
-                priceElement.textContent = '密密買不起的比特幣價格：$' + price;
-                document.body.appendChild(priceElement);
+                var ctx = document.getElementById('chart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: '比特幣價格',
+                            data: prices,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: { 
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: '日期'
+                                }
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: '價格 (美元)'
+                                }
+                            }
+                        }
+                    }
+                });
             })
             .catch(function (error) {
                 // 請求失敗，處理錯誤
@@ -48,5 +83,6 @@
 </head>
 <body>
     <h1>歡迎來到密密老大的網站！</h1>
+    <canvas id="chart"></canvas>
 </body>
 </html>
