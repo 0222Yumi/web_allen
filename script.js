@@ -4,9 +4,13 @@ var startDate = moment().startOf('year').format('YYYY-MM-DD');
 
 // 發出網絡請求獲取比特幣歷史價格數據
 axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + startDate + '&end=' + endDate)
-    .then(function (response) {
+        .then(function (response) {
         // 請求成功，處理響應數據
         var data = response.data.bpi;
+        if (!data) {
+            console.log('No data received');
+            return;
+        }
         var prices = Object.keys(data).map(function(key) {
             return {
                 date: new Date(key),
