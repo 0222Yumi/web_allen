@@ -1,0 +1,45 @@
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: #f6f6f6;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #333333;
+}
+
+p {
+    color: #666666;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 40px;
+}
+
+.chart {
+    display: block;
+    width: 800px;
+    height: 600px;
+    margin: 50px auto;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path {
+    display: none;
+}
