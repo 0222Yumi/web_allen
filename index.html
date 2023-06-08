@@ -31,6 +31,23 @@
             height: 600px;
             margin: 50px auto;
         }
+
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: grey;
+            shape-rendering: crispEdges;
+        }
+
+        .x.axis path {
+            display: none;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -59,8 +76,8 @@
                     .attr('width', 800)
                     .attr('height', 600);
 
-                var xScale = d3.scaleTime().range([0, 800]);
-                var yScale = d3.scaleLinear().range([600, 0]);
+                var xScale = d3.scaleTime().range([50, 750]);
+                var yScale = d3.scaleLinear().range([550, 50]);
                 var line = d3.line()
                     .x(function(d) { return xScale(d.date); })
                     .y(function(d) { return yScale(d.value); });
@@ -70,10 +87,21 @@
 
                 svg.append('path')
                     .datum(prices)
-                    .attr('fill', 'none')
-                    .attr('stroke', 'steelblue')
-                    .attr('stroke-width', 1.5)
+                    .attr('class', 'line')
                     .attr('d', line);
+                    
+                var xAxis = d3.axisBottom(xScale).ticks(12).tickFormat(d3.timeFormat("%m/%Y"));
+                var yAxis = d3.axisLeft(yScale).ticks(6);
+
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + 550 + ")")
+                    .call(xAxis);
+                
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform", "translate(50,0)")
+                    .call(yAxis);
             })
             .catch(function (error) {
                 // 請求失敗，處理錯誤
