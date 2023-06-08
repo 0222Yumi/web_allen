@@ -7,6 +7,7 @@ axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + start
     .then(function (response) {
         console.log(response); // 將整個 response 對象打印到控制台
         var data = response.data.bpi;
+        console.log(data); // 檢查數據格式
         if (!data) {
             console.log('No data received');
             return;
