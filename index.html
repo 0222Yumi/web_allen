@@ -55,7 +55,7 @@
     <script>
         // 獲取今天的日期
         var endDate = moment().format('YYYY-MM-DD');
-        var startDate = moment().subtract(1, 'years').format('YYYY-MM-DD');
+        var startDate = moment().startOf('year').format('YYYY-MM-DD');
 
         // 發出網絡請求獲取比特幣歷史價格數據
         axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + startDate + '&end=' + endDate)
