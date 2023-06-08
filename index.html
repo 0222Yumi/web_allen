@@ -90,7 +90,7 @@
                     .attr('class', 'line')
                     .attr('d', line);
                     
-                var xAxis = d3.axisBottom(xScale).ticks(12).tickFormat(d3.timeFormat("%m/%Y"));
+                var xAxis = d3.axisBottom(xScale).ticks(d3.timeMonth).tickFormat(d3.timeFormat("%m/%Y"));
                 var yAxis = d3.axisLeft(yScale).ticks(6);
 
                 svg.append("g")
