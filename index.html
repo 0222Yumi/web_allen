@@ -68,13 +68,14 @@
                         value: data[key]
                     };
                 });
-
+            
                 // 在網頁中顯示價格線性圖表
-                var svg = d3.select('body')
+                var svg = d3.select('#chart')
                     .append('svg')
                     .attr('class', 'chart')
                     .attr('width', 800)
                     .attr('height', 600);
+
 
                 var xScale = d3.scaleTime().range([50, 750]);
                 var yScale = d3.scaleLinear().range([550, 50]);
