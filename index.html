@@ -10,70 +10,70 @@
             padding: 20px;
             text-align: center;
         }
-
+        
         h1 {
             color: #333333;
         }
-
+        
         p {
             color: #666666;
         }
-
+        
         .price {
             font-size: 24px;
             font-weight: bold;
             margin-top: 40px;
         }
-
-        #chart {
-            width: 75%;
-            height: 500px;
-            margin: 0 auto;
+        
+        .chart {
+            display: block;
+            width: 800px;
+            height: 600px;
+            margin: 50px auto;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script>
-        // 發出網絡請求獲取比特幣價格
-        axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=2023-01-01&end=2023-06-07')
+        // 獲取今天的日期
+        var endDate = moment().format('YYYY-MM-DD');
+        var startDate = moment().subtract(1, 'years').format('YYYY-MM-DD');
+
+        // 發出網絡請求獲取比特幣歷史價格數據
+        axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?start=' + startDate + '&end=' + endDate)
             .then(function (response) {
                 // 請求成功，處理響應數據
-                var priceData = response.data.bpi;
-                var dates = Object.keys(priceData);
-                var prices = Object.values(priceData);
-                
-                var ctx = document.getElementById('chart').getContext('2d');
-                var chart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: dates,
-                        datasets: [{
-                            label: '比特幣價格',
-                            data: prices,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            x: { 
-                                display: true,
-                                title: {
-                                    display: true,
-                                    text: '日期'
-                                }
-                            },
-                            y: {
-                                display: true,
-                                title: {
-                                    display: true,
-                                    text: '價格 (美元)'
-                                }
-                            }
-                        }
-                    }
+                var data = response.data.bpi;
+                var prices = Object.keys(data).map(function(key) {
+                    return {
+                        date: new Date(key),
+                        value: data[key]
+                    };
                 });
+
+                // 在網頁中顯示價格線性圖表
+                var svg = d3.select('body')
+                    .append('svg')
+                    .attr('class', 'chart')
+                    .attr('width', 800)
+                    .attr('height', 600);
+
+                var xScale = d3.scaleTime().range([0, 800]);
+                var yScale = d3.scaleLinear().range([600, 0]);
+                var line = d3.line()
+                    .x(function(d) { return xScale(d.date); })
+                    .y(function(d) { return yScale(d.value); });
+
+                xScale.domain(d3.extent(prices, function(d) { return d.date; }));
+                yScale.domain(d3.extent(prices, function(d) { return d.value; }));
+
+                svg.append('path')
+                    .datum(prices)
+                    .attr('fill', 'none')
+                    .attr('stroke', 'steelblue')
+                    .attr('stroke-width', 1.5)
+                    .attr('d', line);
             })
             .catch(function (error) {
                 // 請求失敗，處理錯誤
